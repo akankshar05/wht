@@ -164,7 +164,7 @@
       and we documented the total count of uniquely generated main
       IDs(rudder_ids) after the stitching process.
       <br />
-      <img alt="" src="./MATERIAL_USER_IDENTITIES_4AEA7751_1806.PNG" />
+      <img alt="" src="./Material_user_identities_4aea7751_1755.png" />
       <br />
       <br />
       2. Shopify Feature Table Model:
@@ -175,7 +175,7 @@
       orders (e.g., total_refund, median_transaction_value) and cart activities
       (carts_in_past_7_days, total_carts, etc.).
       <br />
-      <img alt="" src="./MATERIAL_MERGED_USER_FEATURES_4AEA7751_1806.PNG" />
+      <img alt="" src="./Material_merged_user_features_4aea7751_1755.png" />
 
       <br />
       We separately measured the total time taken by the warehouse to execute
@@ -256,7 +256,7 @@
                   containerDiv.appendChild(table);
 
                   const imageIS = document.createElement("img");
-                  imageIS.src = "./MATERIAL_IDS_GRAPH_AD3E3AE5_1806.PNG";
+                  imageIS.src = "./Material_ids_graph_9b80d2d4_1755.png";
                   containerDiv.appendChild(imageIS);
 
                   document.body.appendChild(containerDiv);
@@ -358,9 +358,9 @@
                       containerDiv.appendChild(table);
 
                       const imageFT = document.createElement("img");
-                      imageFT.src = "./MATERIAL_FT_GRAPH_56B227F0_1806.PNG"; 
+                      imageFT.src = "./Material_ft_graph_0cf64189_1755.png";
                       containerDiv.appendChild(imageFT);
-                      
+
                       document.body.appendChild(containerDiv);
                     })
                     .catch((error) =>
@@ -374,18 +374,18 @@
 
         window.onload = function () {
           const jsonFileNamesIS = [
-            "MATERIAL_INPUT_TABLE_SIZE_24903095_1806.json",
-        "MATERIAL_ID_STITCHER_RUNTIME_06DACD50_1806.json",
+            "Material_input_table_size_24903095_1755.json",
+            "Material_id_stitcher_runtime_06dacd50_1755.json",
           ];
 
           const jsonFileNamesFT = [
-           "MATERIAL_TOTAL_EVENTS_853FFBBD_1806.json",
-         "MATERIAL_INPUT_TABLE_SIZE_24903095_1806.json",
-          "MATERIAL_FEATURE_TABLE_RUNTIME_217BC918_1806.json",
+            "Material_total_events_853ffbbd_1755.json",
+            "Material_input_table_size_24903095_1755.json",
+            "Material_feature_table_runtime_217bc918_1755.json",
           ];
 
-          const tableNameIS = "ID-Resolution"; 
-          const tableNameFT = "Feature-Table"; 
+          const tableNameIS = "ID-Resolution";
+          const tableNameFT = "Feature-Table";
 
           renderTablesIS(jsonFileNamesIS, tableNameIS);
 
