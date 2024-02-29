@@ -164,7 +164,7 @@
       and we documented the total count of uniquely generated main
       IDs(rudder_ids) after the stitching process.
       <br />
-      <img alt="" src="./Material_user_identities_4aea7751_1755.png" />
+      <img alt="" src="./Material_user_identities_4aea7751_1936.png" />
       <br />
       <br />
       2. Shopify Feature Table Model:
@@ -175,7 +175,7 @@
       orders (e.g., total_refund, median_transaction_value) and cart activities
       (carts_in_past_7_days, total_carts, etc.).
       <br />
-      <img alt="" src="./Material_merged_user_features_4aea7751_1755.png" />
+      <img alt="" src="./Material_merged_user_features_4aea7751_1936.png" />
 
       <br />
       We separately measured the total time taken by the warehouse to execute
@@ -189,31 +189,37 @@
 
     <div class="container">
       <script>
-        function renderTablesIS(jsonFileNames, tableName) {
+        function renderTablesIS(
+          jsonFileNames_input_table,
+          jsonFileNamesIS_run_time,
+          tableName
+        ) {
           const containerDiv = document.createElement("div");
           containerDiv.classList.add("table-container");
-
           const table = document.createElement("table");
 
-          fetch(jsonFileNames[0])
-            .then((response) => response.json())
-            .then((data1) => {
-              fetch(jsonFileNames[1])
-                .then((response) => response.json())
-                .then((data2) => {
+          const fetchJson = (fileName) => {
+            return fetch(fileName)
+              .then((response) => response.json())
+              .catch((error) => console.error("Error fetching JSON:", error));
+          };
+          Promise.all(jsonFileNames_input_table.map(fetchJson))
+            .then((dataList1) => {
+              return Promise.all(jsonFileNamesIS_run_time.map(fetchJson))
+                .then((dataList2) => {
                   const heading = document.createElement("h3");
                   heading.textContent = tableName;
                   containerDiv.appendChild(heading);
 
                   const headerRow = document.createElement("tr");
 
-                  data1.Columns.forEach((column) => {
+                  dataList1[0].Columns.forEach((column) => {
                     const th = document.createElement("th");
                     th.textContent = column;
                     headerRow.appendChild(th);
                   });
 
-                  data2.Columns.forEach((column) => {
+                  dataList2[0].Columns.forEach((column) => {
                     const th = document.createElement("th");
                     th.textContent = column;
                     headerRow.appendChild(th);
@@ -224,31 +230,28 @@
 
                   table.appendChild(headerRow);
 
-                  const maxRows = Math.max(
-                    data1.Results.length,
-                    data2.Results.length
-                  );
+                  const maxRows = Math.max(dataList1.length, dataList2.length);
+                  console.log(maxRows);
 
                   for (let i = 0; i < maxRows; i++) {
-                    const row = document.createElement("tr");
+                    var row = document.createElement("tr");
 
-                    if (i < data1.Results.length) {
-                      data1.Results[i].forEach((value) => {
-                        const td = document.createElement("td");
-                        td.textContent = value;
-                        row.appendChild(td);
-                      });
-                    }
+                    console.log(i, dataList1[i]);
+                    let j = 0;
+                    dataList1[i].Results[j].forEach((value) => {
+                      console.log(value);
+                      const td = document.createElement("td");
+                      td.textContent = value;
+                      row.appendChild(td);
+                    });
 
-                    if (i < data2.Results.length) {
-                      data2.Results[i].forEach((value) => {
-                        const td = document.createElement("td");
-                        td.textContent = value;
-                        row.appendChild(td);
-                      });
-                    }
+                    dataList2[i].Results[j].forEach((value) => {
+                      const td = document.createElement("td");
+                      td.textContent = value;
+                      row.appendChild(td);
+                    });
                     const td = document.createElement("td");
-                    td.textContent = (data2.Results / 3600).toFixed(4);
+                    td.textContent = (dataList2[i].Results / 3600).toFixed(4);
                     row.appendChild(td);
                     table.appendChild(row);
                   }
@@ -256,37 +259,55 @@
                   containerDiv.appendChild(table);
 
                   const imageIS = document.createElement("img");
-                  imageIS.src = "./Material_ids_graph_9b80d2d4_1755.png";
+                  imageIS.src = "./Material_ids_graph_2d53224d_1936.png";
                   containerDiv.appendChild(imageIS);
 
                   document.body.appendChild(containerDiv);
                 })
-                .catch((error) => console.error("Error fetching JSON:", error));
+                .catch((error) =>
+                  console.error(
+                    "Error fetching JSON from jsonFileNamesIS_run_time:",
+                    error
+                  )
+                );
             })
-            .catch((error) => console.error("Error fetching JSON:", error));
+            .catch((error) =>
+              console.error(
+                "Error fetching JSON from jsonFileNames_input_table:",
+                error
+              )
+            );
         }
-        function renderTablesFT(jsonFileNames, tableName) {
+
+        function renderTablesFT(
+          jsonFileNames_total_events,
+          jsonFileNames_input_table,
+          jsonFileNamesFT_run_time,
+          tableName
+        ) {
           const containerDiv = document.createElement("div");
           containerDiv.classList.add("table-container");
 
           const table = document.createElement("table");
 
-          fetch(jsonFileNames[0])
-            .then((response) => response.json())
-            .then((data1) => {
-              fetch(jsonFileNames[1])
-                .then((response) => response.json())
-                .then((data2) => {
-                  fetch(jsonFileNames[2])
-                    .then((response) => response.json())
-                    .then((data3) => {
+          const fetchJson = (fileName) => {
+            return fetch(fileName)
+              .then((response) => response.json())
+              .catch((error) => console.error("Error fetching JSON:", error));
+          };
+          Promise.all(jsonFileNames_total_events.map(fetchJson))
+            .then((dataList1) => {
+              return Promise.all(jsonFileNames_input_table.map(fetchJson))
+                .then((dataList2) => {
+                  return Promise.all(jsonFileNamesFT_run_time.map(fetchJson))
+                    .then((dataList3) => {
                       const heading = document.createElement("h3");
                       heading.textContent = tableName;
                       containerDiv.appendChild(heading);
 
                       const headerRow = document.createElement("tr");
 
-                      data1.Columns.forEach((column) => {
+                      dataList1[0].Columns.forEach((column) => {
                         const th = document.createElement("th");
                         th.textContent = column;
                         headerRow.appendChild(th);
@@ -302,7 +323,7 @@
                       th3.textContent = "TOTAL_FEATURES";
                       headerRow.appendChild(th3);
 
-                      data3.Columns.forEach((column) => {
+                      dataList3[0].Columns.forEach((column) => {
                         const th = document.createElement("th");
                         th.textContent = column;
                         headerRow.appendChild(th);
@@ -315,23 +336,21 @@
                       table.appendChild(headerRow);
 
                       const maxRows = Math.max(
-                        data1.Results.length,
-                        data2.Results.length
+                        dataList1.length,
+                        dataList2.length
                       );
 
                       for (let i = 0; i < maxRows; i++) {
                         const row = document.createElement("tr");
-
-                        if (i < data1.Results.length) {
-                          data1.Results[i].forEach((value) => {
-                            const td = document.createElement("td");
-                            td.textContent = value;
-                            row.appendChild(td);
-                          });
-                        }
+                        let j = 0;
+                        dataList1[i].Results[j].forEach((value) => {
+                          const td = document.createElement("td");
+                          td.textContent = value;
+                          row.appendChild(td);
+                        });
 
                         const td1 = document.createElement("td");
-                        td1.textContent = data2.Results[0][0];
+                        td1.textContent = dataList2[i].Results[0][0];
                         row.appendChild(td1);
                         const td2 = document.createElement("td");
                         td2.textContent = 176;
@@ -340,16 +359,16 @@
                         td3.textContent = 53;
                         row.appendChild(td3);
 
-                        if (i < data3.Results.length) {
-                          data3.Results[i].forEach((value) => {
-                            const td = document.createElement("td");
-                            td.textContent = value;
-                            row.appendChild(td);
-                          });
-                        }
+                        dataList3[i].Results[j].forEach((value) => {
+                          const td = document.createElement("td");
+                          td.textContent = value;
+                          row.appendChild(td);
+                        });
 
                         const td = document.createElement("td");
-                        td.textContent = (data3.Results / 3600).toFixed(4);
+                        td.textContent = (dataList3[i].Results / 3600).toFixed(
+                          4
+                        );
                         row.appendChild(td);
 
                         table.appendChild(row);
@@ -358,7 +377,7 @@
                       containerDiv.appendChild(table);
 
                       const imageFT = document.createElement("img");
-                      imageFT.src = "./Material_ft_graph_0cf64189_1755.png";
+                      imageFT.src = "./Material_ft_graph_7ce8d7cc_1936.png";
                       containerDiv.appendChild(imageFT);
 
                       document.body.appendChild(containerDiv);
@@ -373,23 +392,39 @@
         }
 
         window.onload = function () {
-          const jsonFileNamesIS = [
-            "Material_input_table_size_24903095_1755.json",
-            "Material_id_stitcher_runtime_06dacd50_1755.json",
+          const jsonFileNames_input_table = [
+            "Material_input_table_size_9772fe05_1936.json",
+            "Material_input_table_size_2_bbf7acbc_1936.json",
+          ];
+          const jsonFileNamesIS_run_time = [
+            "Material_id_stitcher_runtime_13981c1c_1936.json",
+            "Material_id_stitcher_runtime_2_cc78735d_1936.json",
           ];
 
-          const jsonFileNamesFT = [
-            "Material_total_events_853ffbbd_1755.json",
-            "Material_input_table_size_24903095_1755.json",
-            "Material_feature_table_runtime_217bc918_1755.json",
+          const jsonFileNames_total_events = [
+            "Material_total_events_1fde553a_1936.json",
+            "Material_total_events_2_4ac9dcc2_1936.json",
+          ];
+          const jsonFileNamesFT_run_time = [
+            "Material_feature_table_runtime_f35fd721_1936.json",
+            "Material_feature_table_runtime_2_4452ebda_1936.json",
           ];
 
           const tableNameIS = "ID-Resolution";
           const tableNameFT = "Feature-Table";
 
-          renderTablesIS(jsonFileNamesIS, tableNameIS);
+          renderTablesIS(
+            jsonFileNames_input_table,
+            jsonFileNamesIS_run_time,
+            tableNameIS
+          );
 
-          renderTablesFT(jsonFileNamesFT, tableNameFT);
+          renderTablesFT(
+            jsonFileNames_total_events,
+            jsonFileNames_input_table,
+            jsonFileNamesFT_run_time,
+            tableNameFT
+          );
         };
       </script>
     </div>
